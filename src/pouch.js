@@ -130,7 +130,7 @@ Pouch.destroy = function (name, opts, callback) {
   var backend = Pouch.parseAdapter(opts.name || name);
   var dbName = opts.name || backend.name;
 
-    var cb = function (err, response) {
+  var cb = function (err, response) {
     if (err) {
       callback(err);
       return;
