@@ -40,9 +40,10 @@ Object.keys(Pouch.adapters).forEach(function(adapter) {
                     pouchDB = new Pouch({name : dbName, adapter: adapter}, function onRecreate() {
 
                         pouchDB.get(docid, function onGet(err, doc){
-                            var explanation = 'should not return the document, because db was deleted';
-                            equal(doc, undefined, explanation);
-                            notEqual(err, undefined, explanation);
+                            equal(doc, undefined, explanation, 'adapter ' + adapter +' should not return the document,' +
+                                ' because db was deleted');
+                            notEqual(err, undefined, explanation, 'adapter ' + adapter +' should return error,' +
+                                ' because db was deleted');
                             start();
                         })
                     });

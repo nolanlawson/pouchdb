@@ -128,22 +128,23 @@ Pouch.destroy = function (name, opts, callback) {
     callback = function () {};
   }
   var backend = Pouch.parseAdapter(opts.name || name);
+  var dbName = opts.name || backend.name;
 
-  var cb = function (err, response) {
+    var cb = function (err, response) {
     if (err) {
       callback(err);
       return;
     }
 
     for (var plugin in Pouch.plugins) {
-      Pouch.plugins[plugin]._delete(backend.name);
+      Pouch.plugins[plugin]._delete(dbName);
     }
     if (Pouch.DEBUG) {
-      console.log(backend.name + ': Delete Database');
+      console.log(dbName + ': Delete Database');
     }
 
     // call destroy method of the particular adaptor
-    Pouch.adapters[backend.adapter].destroy(backend.name, opts, callback);
+    Pouch.adapters[backend.adapter].destroy(dbName, opts, callback);
   };
 
   // remove Pouch from allDBs
