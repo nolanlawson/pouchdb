@@ -462,6 +462,31 @@ adapters.map(function(adapter) {
       });
     });
   });
+
+  asyncTest("putAttachment and getAttachment with png data", function() {
+    testUtils.initTestDB(this.name, function(err, db) {
+      db.put({_id: 'foo'}, function(err, res) {
+        db.get('foo', function(err, doc){
+          var data = pngAttDoc._attachments['foo.png'].data;
+          var blob = testUtils.makeBlob(PouchDB.utils.fixBinary(PouchDB.utils.atob(data)), 'image/png');
+          db.putAttachment('foo', 'foo.png', doc._rev, blob, 'image/png', function(err, info){
+            ok(!err, 'attachment inserted');
+            db.getAttachment('foo', 'foo.png', function(err, blob) {
+              ok(!err, 'attachment gotten');
+              function onReadData(returnedData) {
+                equal(returnedData, data, 'returned png base64-encoded data same as original data');
+                start();
+              }
+              testUtils.readBlob(blob, function(returnedData) {
+                equal(returnedData, data, 'returned png base64-encoded data same as original data');
+                start();
+              });
+            })
+          })
+        })
+      });
+    });
+  })
 });
 
 
