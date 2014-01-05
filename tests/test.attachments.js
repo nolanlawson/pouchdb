@@ -474,16 +474,15 @@ adapters.map(function(adapter) {
             db.getAttachment('foo', 'foo.png', function(err, blob) {
               ok(!err, 'attachment gotten');
               testUtils.readBlob(blob, function(returnedData) {
-                window.console.log('returnedData is ' + returnedData);
                 equal(PouchDB.utils.btoa(returnedData), data, 'returned png base64-encoded data same as original data');
                 start();
               });
-            })
-          })
-        })
+            });
+          });
+        });
       });
     });
-  })
+  });
 });
 
 
