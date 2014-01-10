@@ -7,6 +7,7 @@ testFiles = testFiles && testFiles[1].split(',') || [];
 var started = new Date();
 if (!testFiles.length) {
   testFiles = [
+    'test.es5.js',
     'test.setup.js',
     'test.basics.js', 'test.all_dbs.js', 'test.changes.js',
     'test.bulk_docs.js', 'test.all_docs.js', 'test.conflicts.js',
@@ -42,7 +43,12 @@ function asyncLoadScript(url, callback) {
       callback();
 
       // Clear it out to avoid getting called more than once or any memory leaks.
-      script.onload = script.onreadystatechange = undefined;
+      try {
+        script.onload = script.onreadystatechange = undefined;
+      } catch (err) {
+        console.log(err);
+      }
+
     };
     script.onreadystatechange = function() {
       if ( "loaded" === script.readyState || "complete" === script.readyState ) {
@@ -74,7 +80,11 @@ function asyncParForEach(array, fn, callback) {
 QUnit.config.testTimeout = 60000;
 
 QUnit.jUnitReport = function(report) {
-  document.body.classList.add('testsComplete');
+  if (document.body.classList) {
+    document.body.classList.add('testsComplete');
+  } else { // ie fix
+    document.body.className += ' testsComplete';
+  }
   report.started = started;
   report.completed = new Date();
   report.passed = (report.results.failed === 0);
