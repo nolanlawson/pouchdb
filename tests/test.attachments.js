@@ -425,18 +425,39 @@ adapters.map(function(adapter) {
   });
 
   asyncTest("Test synchronous getAttachment", function() {
-    var db = new PouchDB(this.name);
-    db.getAttachment('unexistent', 'attachment', function(err, res) {
-      ok(err, "Correctly returned error");
-      start();
+    testUtils.initTestDB(this.name, function(err, db) {
+      db.getAttachment('unexistent', 'attachment', function(err, res) {
+        ok(err, "Correctly returned error");
+        start();
+      });
     });
   });
 
-  asyncTest("Test synchronous putAttachment", function() {
-    var db = new PouchDB(this.name);
-    db.putAttachment('a', 'foo2.txt', '', '', 'text/plain', function(err) {
-      ok(!err, "Correctly wrote attachment");
-      start();
+  asyncTest("Test synchronous putAttachment with data", function() {
+    testUtils.initTestDB(this.name, function(err, db) {
+      db.putAttachment('a', 'foo2.txt', '', testUtils.makeBlob('foobaz', 'text/plain'), 'text/plain', function(err) {
+        ok(!err, "Correctly wrote attachment");
+        db.get('a', {attachments : true}, function(err, doc) {
+          ok(!err, 'Correctly got attachment');
+          strictEqual(doc._attachments['foo2.txt'].data, 'Zm9vYmF6');
+          equal(doc._attachments['foo2.txt'].content_type, 'text/plain');
+          start();
+        });
+      });
+    });
+  });
+
+  asyncTest("Test synchronous putAttachment with no data", function() {
+    testUtils.initTestDB(this.name, function(err, db) {
+      db.putAttachment('a', 'foo2.txt', '', '', 'text/plain', function(err) {
+        ok(!err, "Correctly wrote attachment");
+        db.get('a', {attachments : true}, function(err, doc) {
+          ok(!err, 'Correctly got attachment');
+          strictEqual(doc._attachments['foo2.txt'].data, '');
+          equal(doc._attachments['foo2.txt'].content_type, 'text/plain');
+          start();
+        });
+      });
     });
   });
 
