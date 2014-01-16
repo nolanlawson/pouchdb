@@ -454,7 +454,11 @@ adapters.map(function(adapter) {
         db.get('a', {attachments : true}, function(err, doc) {
           ok(!err, 'Correctly got attachment');
           strictEqual(doc._attachments['foo2.txt'].data, '');
-          equal(doc._attachments['foo2.txt'].content_type, 'text/plain');
+
+          // firefox 3 appends charset=utf8
+          // see http://forums.mozillazine.org/viewtopic.php?p=6318215#p6318215
+          strictEqual(doc._attachments['foo2.txt'].content_type.indexOf('text/plain'), 0,
+            'expected content-type to start with text/plain');
           start();
         });
       });
