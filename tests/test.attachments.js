@@ -433,7 +433,7 @@ adapters.map(function(adapter) {
     });
   });
 
-  asyncTest("Test synchronous putAttachment with data", function() {
+  asyncTest("Test synchronous putAttachment with text data", function() {
     testUtils.initTestDB(this.name, function(err, db) {
       db.putAttachment('a', 'foo2.txt', '', testUtils.makeBlob('foobaz', 'text/plain'), 'text/plain', function(err) {
         ok(!err, "Correctly wrote attachment");
@@ -447,7 +447,7 @@ adapters.map(function(adapter) {
     });
   });
 
-  asyncTest("Test synchronous putAttachment with no data", function() {
+  asyncTest("Test synchronous putAttachment with no text data", function() {
     testUtils.initTestDB(this.name, function(err, db) {
       db.putAttachment('a', 'foo2.txt', '', '', 'text/plain', function(err) {
         ok(!err, "Correctly wrote attachment");
