@@ -1,5 +1,38 @@
 "use strict";
 
+
+//
+// async hack to ensure qunit runs async tests sequentially,
+// which fixes concurrent db handle errors in Safari (#1068)
+//
+var queue = [];
+function processNext() {
+  if (!queue.length) { // done
+    return;
+  }
+  var currentTest = queue.shift();
+  currentTest();
+}
+function wrapCallback(callback) {
+  return function () {
+    callback.apply(this);
+    processNext();
+  };
+}
+var originalAsyncTest = window.asyncTest;
+window.asyncTest = function (testName, expected, callback) {
+  var args = arguments;
+  var that = this;
+  queue.push(function () {
+    if (args.length === 2) {
+      originalAsyncTest.apply(that, [testName, wrapCallback(expected)]);
+    } else {
+      originalAsyncTest.apply(that, [testName, expected, wrapCallback(callback)]);
+    }
+  });
+  processNext();
+};
+
 // use query parameter testFiles if present,
 // eg: test.html?testFiles=test.basics.js
 var testFiles = window.location.search.match(/[?&]testFiles=([^&]+)/);
