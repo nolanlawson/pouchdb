@@ -233,6 +233,36 @@ adapters.map(function(adapter) {
       });
     });
   });
+  asyncTest('test total_rows with both skip and limit', function() {
+    testUtils.initTestDB(this.name, function(err, db) {
+      var docs = {
+        docs: [
+          {_id: "w", foo: "w"},
+          {_id: "x", foo: "x"},
+          {_id: "y", foo: "y"},
+          {_id: "z", foo: "z"}
+        ]
+      };
+      db.bulkDocs(docs, function(err, res) {
+        db.allDocs({ startkey: 'x', limit: 1 , skip : 1}, function (err, res) {
+          equal(res.total_rows, 4, 'Accurately return total_rows count');
+          equal(res.rows.length, 1, 'Correctly limit the returned rows');
+          equal(res.rows[0].id, 'y', 'Correctly skip 1 doc');
+
+          db.get('x', function(err, xDoc) {
+            db.remove(xDoc, function(err, res){
+              db.allDocs({ startkey: 'w', limit: 2 , skip : 1}, function(err, res) {
+                equal(res.total_rows, 3, 'Accurately return total_rows count after delete');
+                equal(res.rows.length, 2, 'Correctly limit the returned rows after delete');
+                equal(res.rows[0].id, 'y', 'Correctly skip 1 doc after delete');
+                start();
+              })
+            })
+          })
+        });
+      });
+    });
+  });
 
   asyncTest('test limit option and total_rows', function() {
     testUtils.initTestDB(this.name, function(err, db) {
@@ -251,6 +281,106 @@ adapters.map(function(adapter) {
       });
     });
   });
+
+  asyncTest('test total_rows with a variety of criteria', function() {
+    testUtils.initTestDB(this.name, function(err, db) {
+      var docs = [
+        {_id : '0'},
+        {_id : '1'},
+        {_id : '2'},
+        {_id : '3'},
+        {_id : '4'},
+        {_id : '5'},
+        {_id : '6'},
+        {_id : '7'},
+        {_id : '8'},
+        {_id : '9'}
+      ];
+      db.bulkDocs({docs : docs}).then(function (res) {
+        docs[3]._deleted = true;
+        docs[7]._deleted = true;
+        docs[3]._rev = res[3].rev;
+        docs[7]._rev = res[7].rev;
+        return db.remove(docs[3]);
+      }).then(function () {
+        return db.remove(docs[7]);
+      }).then(function () {
+        return db.allDocs();
+      }).then(function (res) {
+        equal(res.rows.length, 8, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({startkey : '5'})
+      }).then(function (res) {
+        equal(res.rows.length, 4, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({startkey : '5', skip : 2, limit : 10})
+      }).then(function (res) {
+        equal(res.rows.length, 2, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({startkey : '5', descending : true, skip : 1})
+      }).then(function (res) {
+        equal(res.rows.length, 4, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({startkey : '5', endkey : 'z'})
+      }).then(function (res) {
+        equal(res.rows.length, 4, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({startkey : '5', endkey : '5'})
+      }).then(function (res) {
+        equal(res.rows.length, 1, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({startkey : '5', endkey : '4'});
+      }).then(function (res) {
+        equal(res.rows.length, 0, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({startkey : '5', endkey : '4', descending : true});
+      }).then(function (res) {
+        equal(res.rows.length, 2, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({startkey : '3', endkey : '7', descending : false});
+      }).then(function (res) {
+        equal(res.rows.length, 3, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({startkey : '7', endkey : '3', descending : true});
+      }).then(function (res) {
+        equal(res.rows.length, 3, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({startkey : '', endkey : '0'});
+      }).then(function (res) {
+        equal(res.rows.length, 1, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({keys : ['0', '1', '3']});
+      }).then(function (res) {
+        equal(res.rows.length, 3, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({keys : []});
+      }).then(function (res) {
+        equal(res.rows.length, 0, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({keys : ['7']});
+      }).then(function (res) {
+        equal(res.rows.length, 1, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({key : '3'})
+      }).then(function (res) {
+        equal(res.rows.length, 0, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({key : '2'})
+      }).then(function (res) {
+        equal(res.rows.length, 1, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        return db.allDocs({key : 'z'})
+      }).then(function (res) {
+        equal(res.rows.length, 0, 'correctly return rows');
+        equal(res.total_rows, 8, 'correctly return total_rows');
+        start();
+      }).catch(function (err) {
+        ok(!err, 'got error: ' + JSON.stringify(err));
+        start();
+      });
+
+    })
+  })
 
   asyncTest('test escaped startkey/endkey', 1, function () {
     testUtils.initTestDB(this.name, function (err, db) {
