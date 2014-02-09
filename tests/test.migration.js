@@ -11,39 +11,46 @@ if (typeof module !== 'undefined' && module.exports) {
 adapters.map(function (adapter) {
 
   QUnit.module('migration: ' + adapter, {
-    setup : function () {
+    setup: function () {
       this.name = testUtils.generateAdapterUrl(adapter);
       PouchDB.enableAllDbs = true;
+      PouchDBVersion110.enableAllDbs = true;
+
+      // uncomment to test websql in Chrome
+      // delete PouchDBVersion110.adapters.idb;
+      // delete PouchDB.adapters.idb;
     },
     teardown: testUtils.cleanupTestDatabases
   });
 
   var origDocs = [
-    {_id : '0', a : 1, b: 1},
-    {_id : '3', a : 4, b: 16},
-    {_id : '1', a : 2, b: 4},
-    {_id : '2', a : 3, b: 9}
+    {_id: '0', a: 1, b: 1},
+    {_id: '3', a: 4, b: 16},
+    {_id: '1', a: 2, b: 4},
+    {_id: '2', a: 3, b: 9}
   ];
 
   asyncTest('Testing basic migration integrity', function () {
     var dbName = this.name;
     var oldPouch = new PouchDBVersion110(dbName);
-    oldPouch.bulkDocs({docs : origDocs}, function (err, res) {
+    oldPouch.bulkDocs({docs: origDocs}, function (err, res) {
       origDocs[0]._deleted = true;
       origDocs[0]._rev = res[0].rev;
       oldPouch.remove(origDocs[0], function (err, res) {
         var pouch = new PouchDB(dbName);
-        pouch.allDocs({key : '2'}, function (err, res) {
-          ok(!err);
-          equal(res.total_rows, 3);
-          equal(res.rows.length, 1);
-          pouch.allDocs({key : '0'}, function (err, res) {
+        setTimeout(function () {
+          pouch.allDocs({key: '2'}, function (err, res) {
             ok(!err);
             equal(res.total_rows, 3);
-            equal(res.rows.length, 0);
-            start();
+            equal(res.rows.length, 1);
+            pouch.allDocs({key: '0'}, function (err, res) {
+              ok(!err);
+              equal(res.total_rows, 3);
+              equal(res.rows.length, 0);
+              start();
+            });
           });
-        });
+        }, 500);
       });
     });
   });
