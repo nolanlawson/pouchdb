@@ -372,6 +372,7 @@ testUtils.cleanUpCors = function (dburl, callback_) {
 var testDir;
 if (typeof module !== 'undefined' && module.exports) {
   global.PouchDB = require('../lib');
+  global.PouchDBVersion110 = require('./deps/pouchdb-1.1.0-postfixed.min.js');
   if (typeof process !== 'undefined') {
     testDir = process.env.TESTS_DIR ? process.env.TESTS_DIR : './tmp';
     testDir = testDir.slice(-1) === '/' ? testDir : testDir + '/';

@@ -19,7 +19,8 @@ var testHelpers = {};
 if (typeof module !== 'undefined' && module.exports) {
   downAdapters = [];
 }
-describe('changes', function () {
+
+describe('replication', function () {
   adapters.map(function (adapters) {
     describe(adapters, function () {
       beforeEach(function () {
@@ -99,7 +100,7 @@ describe('changes', function () {
           db.bulkDocs({ docs: docs }, {}, function (err, results) {
             db.replicate.to(testHelpers.remote, function (err, result) {
               ok(result.ok, 'replication was ok');
-              ok(result.docs_written === docs.length, 'correct # docs written');
+              equal(result.docs_written, docs.length, 'correct # docs written');
               start();
             });
           });
@@ -1488,7 +1489,7 @@ describe('replication', function () {
                 var db_total = res.total_rows;
                 remote.allDocs(function (err, res) {
                   var remote_total = res.total_rows;
-                  ok(db_total === remote_total, 'replicated all docs successfully');
+                  equal(db_total, remote_total, 'replicated all docs successfully');
                   start();
                 });
               });
