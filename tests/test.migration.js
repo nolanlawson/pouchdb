@@ -13,7 +13,6 @@ describe('migration', function () {
         testHelpers.name = testUtils.generateAdapterUrl(local);
         testHelpers.remote = testUtils.generateAdapterUrl(remote);
         PouchDB.enableAllDbs = true;
-        PouchDBVersion110.enableAllDbs = true;
 
         // uncomment to test websql in Chrome
         // delete PouchDBVersion110.adapters.idb;
@@ -35,16 +34,17 @@ describe('migration', function () {
           origDocs[0]._rev = res[0].rev;
           oldPouch.remove(origDocs[0], function (err, res) {
             setTimeout(function () {
-              var newPouch = new PouchDB(testHelpers.name);
-              newPouch.allDocs({key: '2'}, function (err, res) {
-                should.not.exist(err, 'got error: ' + JSON.stringify(err));
-                res.total_rows.should.equal(3);
-                res.rows.should.have.length(1);
-                newPouch.allDocs({key: '0'}, function (err, res) {
+              new PouchDB(testHelpers.name).then(function (err, newPouch) {
+                newPouch.allDocs({key: '2'}, function (err, res) {
                   should.not.exist(err, 'got error: ' + JSON.stringify(err));
                   res.total_rows.should.equal(3);
-                  res.rows.should.have.length(0);
-                  done();
+                  res.rows.should.have.length(1);
+                  newPouch.allDocs({key: '0'}, function (err, res) {
+                    should.not.exist(err, 'got error: ' + JSON.stringify(err));
+                    res.total_rows.should.equal(3);
+                    res.rows.should.have.length(0);
+                    done();
+                  });
                 });
               });
             }, 700);
