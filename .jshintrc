@@ -14,7 +14,8 @@
   "trailing": true,
   "globalstrict": true,
   "globals": {
-    "PouchDB": true
+    "PouchDB": true,
+    "PouchDBVersion110" : true
   },
   "white": true,
   "indent": 2,

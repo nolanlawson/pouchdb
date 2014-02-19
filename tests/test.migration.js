@@ -52,7 +52,7 @@ describe('migration', function () {
         });
       });
 
-      it("Test basic replication with migration", function(done) {
+      it("Test basic replication with migration", function (done) {
 
         var docs = [
           {_id: "0", integer: 0, string: '0'},
@@ -63,15 +63,15 @@ describe('migration', function () {
         ];
 
         var oldPouch = new PouchDBVersion110(testHelpers.remote);
-        oldPouch.bulkDocs({docs: docs}, {}, function(err, res) {
-          oldPouch.replicate.to(testHelpers.name, {}, function(err, result) {
+        oldPouch.bulkDocs({docs: docs}, {}, function (err, res) {
+          oldPouch.replicate.to(testHelpers.name, {}, function (err, result) {
             should.not.exist(err, 'got error: ' + JSON.stringify(err));
             should.exist(result.ok, 'replication was ok');
             console.log(result);
             result.docs_written.should.equal(docs.length, 'correct # docs written');
             setTimeout(function () {
               var newPouch = new PouchDB(testHelpers.name);
-              newPouch.allDocs({}, function(err, res) {
+              newPouch.allDocs({}, function (err, res) {
                 should.not.exist(err, 'got error: ' + JSON.stringify(err));
                 res.total_rows.should.equal(3);
                 res.rows.should.have.length(3);
