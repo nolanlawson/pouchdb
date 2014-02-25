@@ -31,7 +31,7 @@ var testResultsSync;
       speed    : test.speed,
       state    : test.state,
       sync     : test.sync,
-      err      : test.err,
+      err      : test.err
     };
   }
 
@@ -73,7 +73,8 @@ var testResultsSync;
         type          : 'session'
       };
       testResultsDb.post(session);
-      var testResultsUrl = window.COUCHDB_HOST.replace('/\/\//', '//' + sessionUsername + ':' + password + '@') +
+      var testResultsUrl = window.COUCHDB_HOST.replace(/http:\/\/(.*?:.*?@)?/,
+        'http://' + sessionUsername + ':' + password + '@') +
         '/test_reports';
       testResultsDb.replicate.to(testResultsUrl, {continuous : true});
     }).error(function (err) {
