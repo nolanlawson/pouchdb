@@ -4,12 +4,14 @@
 
 var testUtils = {};
 
+window.COUCHDB_HOST = 'http://localhost:5984';//'http://pouchtest:pouchtest@pouchtest.com/couchdb';
+
 testUtils.couchHost = function () {
   if (typeof module !== 'undefined' && module.exports) {
     return process.env.COUCH_HOST || 'http://localhost:5984';
   }
   // In the browser we default to the CORS server, in future will change
-  return 'http://pouchtest:pouchtest@pouchtest.com/couchdb';
+  return window.COUCHDB_HOST;
 };
 
 testUtils.uuid = function () {
