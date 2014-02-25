@@ -9,7 +9,7 @@ testUtils.couchHost = function () {
     return process.env.COUCH_HOST || 'http://localhost:5984';
   }
   // In the browser we default to the CORS server, in future will change
-  return 'http://localhost:2020';
+  return 'http://pouchtest:pouchtest@pouchtest.com/couchdb';
 };
 
 testUtils.uuid = function () {
