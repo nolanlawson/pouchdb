@@ -1,4 +1,4 @@
-/* global mocha: true */
+/* global testResultsSync,mocha: true */
 
 'use strict';
 
@@ -9,11 +9,13 @@ var results = {
   failures: []
 };
 
-runner.on('pass', function () {
+runner.on('pass', function (test) {
+  testResultsSync.onPassOrFail(test);
   results.passed++;
 });
 
 runner.on('fail', function (e) {
+  testResultsSync.onPassOrFail(e);
   results.failed++;
   results.failures.push({
     title: e.title,

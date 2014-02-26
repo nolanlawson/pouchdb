@@ -41,7 +41,9 @@
     "mocha": "~1.17.1",
     "chai": "~1.9.0",
     "istanbul": "~0.2.4",
-    "ncp": "~0.5.0"
+    "ncp": "~0.5.0",
+    "es5-shim":"~2.3.0",
+    "ua-parser-js":"~0.6.2"
   },
   "scripts": {
     "jshint": "./node_modules/.bin/jshint -c .jshintrc bin/*.js tests/*.js lib/*.js lib/adapters/*.js lib/deps/*.js",
@@ -55,7 +57,8 @@
     "test": "npm run jshint && ./bin/run-test.sh",
     "publish": "./bin/publish.sh",
     "publish-site": "./bin/publish-site.sh",
-    "coverage": "COVERAGE=1 ./bin/run-mocha.sh"
+    "coverage": "COVERAGE=1 ./bin/run-mocha.sh",
+    "postinstall":"git rev-parse HEAD^1 > tests/deps/pouch-commit.txt"
   },
   "browser": {
     "./adapters/leveldb": false,
