@@ -13,7 +13,8 @@
     "bootstrap": "~3.1.1",
     "benchmark": "~1.0.0",
     "platform" : "~1.0.0",
-    "firebug-lite": "~1.5.1"
+    "firebug-lite": "~1.5.1",
+    "lodash": "2.4.1"
   },
   "development": {},
   "license": "Apache",
