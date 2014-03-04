@@ -63,18 +63,12 @@
 
   /** The `ui` object */
   var ui = root.ui || (root.ui = {
-    'buildPath': basename(filePath, '.js'),
-    'otherPath': 'underscore'
+    'buildName': 'pouchDB',
+    'otherName': 'pouchDBVersion200'
   });
 
-  /** The Lo-Dash build basename */
-  var buildName = root.buildName = basename(ui.buildPath, '.js');
-
-  /** The other library basename */
-  var otherName = root.otherName = (function() {
-    var result = basename(ui.otherPath, '.js');
-    return result + (result == buildName ? ' (2)' : '');
-  }());
+  var buildName = root.buildName = root.ui.buildName;
+  var otherName = root.otherName = root.ui.otherName;
 
   /** Used to score performance */
   var score = { 'a': [], 'b': [] };
@@ -283,33 +277,28 @@
     'async': true,
     'setup': '\
       var pouchDB = new root.PouchDB("foo"),\
-          pouchDB110 = new root.PouchDBVersion110("bar"),\
-          pouchDB200 = new root.PouchDBVersion200("baz");\
+          pouchDBVersion110 = new root.PouchDBVersion110("bar"),\
+          pouchDBVersion200 = new root.PouchDBVersion200("baz");\
           \
           '
   });
 
   /*--------------------------------------------------------------------------*/
 
-  suites.push(
-    Benchmark.Suite('`Constructor')
-      .add(buildName, '\
-        pouchDB.get("foo")'
-      )
-      .add(otherName, '\
-        pouchDB110.get("bar")'
-      )
-  );
+  function replaceDB(pouchName, script) {
+    return script.replace(/POUCH/g, pouchName);
+  }
 
   suites.push(
-    Benchmark.Suite('`Constructor 2')
-      .add(buildName, '\
-        parseInt(1)'
-      )
-      .add(otherName, '\
-        parseInt(1)'
-      )
+    Benchmark.Suite('db.get() on missing document')
+      .add(buildName, replaceDB(buildName, '\
+        POUCH.get("foo")'
+      ))
+      .add(otherName, replaceDB(otherName, '\
+        POUCH.get("bar")'
+      ))
   );
+
 
   /*--------------------------------------------------------------------------*/
 
