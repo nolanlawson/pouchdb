@@ -61,6 +61,10 @@ Delete database.
 db.destroy(function(err, info) { });
 {% endhighlight %}
 
+You can also delete a database using just the name:
+
+{% highlight js %} PouchDB.destroy('dbname', function(err, info) { }); {% endhighlight %}
+
 ## Create / Update a document<a id="create_document"></a>
 
 ### Using db.put()
@@ -316,7 +320,7 @@ db.changes(options)
 {% endhighlight %}
 
 A list of changes made to documents in the database, in the order they were made.
-It returns an object with one method `cancel` which you call if you don't want to listen to new changes anymore. 
+It returns an object with one method `cancel`, which you call if you don't want to listen to new changes anymore. 
 `options.onChange` will be be called for each change that is encountered.
 
 ### Options
@@ -741,7 +745,7 @@ db.revsDiff({
 
 ## Events<a id="events"></a>
 
-PouchDB is an [event emiter](http://nodejs.org/api/events.html#events_class_events_eventemitter) and will emit a 'created' event when a database is created. A 'destroy' event is emited when a database is destroyed.
+PouchDB is an [event emiter](http://nodejs.org/api/events.html#events_class_events_eventemitter) and will emit a `'created'` event when a database is created. A `'destroy'` event is emited when a database is destroyed.
 
 {% highlight js %}
 PouchDB.on('created', function (dbName) {
@@ -754,13 +758,25 @@ PouchDB.on('destroyed', function (dbName) {
 
 ## Plugins<a id="plugins"></a>
 
-Writing a plugin is easy the api is
+Writing a plugin is easy! The api is:
 
 {% highlight js %}
 PouchDB.plugin({
-  methodName: function
+  methodName: myFunction)
+  }
 });
 {% endhighlight %}
 
-This will add the function as a method of all databases with the given name, it will always be called in context so that `this` is db.
+This will add the function as a method of all databases with the given method name.  It will always be called in context, so that `this` always refers to the database object.
 
+#### Example Usage:
+{% highlight js %}
+PouchDB.plugin({
+  sayMyName : function () {
+    this.info().then(function (info)   {
+      console.log('My name is ' + info.db_name);
+    });
+  }
+});
+new PouchDB('foobar').sayMyName(); // My name is foobar
+{% endhighlight %}
