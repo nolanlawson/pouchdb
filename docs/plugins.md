@@ -147,7 +147,7 @@ Note that the `value`s are passed through `JSON.stringify()` before being stored
 {% highlight js %}
 PouchDB.plugin({
   myPluginFunction : function () {
-    var index = this.index('myIndex')
+    var index = this.index('myIndex');
     index.put('groupId', {
       'key1' : undefined,
       'key2' : {some : ['arbitrary', 'json', new Date(0)]}
@@ -181,6 +181,23 @@ Example response:
   }
 ]
 {% endhighlight %}
+
+##### Counting the items in an index
+
+The `count()` function counts the number of items in an index, i.e. the number of rows you would get if you called `get({})`. This corresponds to the `total_rows` count, in CouchDB vocabulary.
+
+{% highlight js %}
+PouchDB.plugin({
+  myPluginFunction : function () {
+    var index = this.index('myIndex');
+    index.count(function (err, result) {
+      /* handle err or result */
+    });
+  }
+});
+{% endhighlight %}
+
+In this case the `result` will be an nonnegative integer (assuming no error).
 
 ##### Destroying an index
 
