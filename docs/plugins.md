@@ -1,6 +1,6 @@
 ---
 layout: learn
-title: Plugins - PouchDB
+title: Write Plugins - PouchDB
 ---
 
 # PouchDB Plugins
