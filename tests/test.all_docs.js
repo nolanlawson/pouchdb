@@ -482,16 +482,16 @@ adapters.forEach(function (adapter) {
     });
     it('test "keys" with weird characters', function (done) {
       var db = new PouchDB(dbs.name);
+      var docId = 'foo';
       var ids = [
-        "foo::1-a", "foo::2-g", "foo::3-h", "foo::4-i",
-        "foo::2-d", "foo::3-e", "foo::2-b"
-      ];
+        "1-a", "2-g", "3-h", "4-i", "2-d", "3-e", "2-b", "3-z", "3-y", "1-z"
+      ].map(function (i) { return docId + '::' + i; });
       db.bulkDocs({
         docs: ids.map(function (id) {return {_id : id}; })
       }, function (err) {
         should.not.exist(err);
         db.allDocs({ keys: ids }, function (err, res) {
-          res.rows.should.have.length(7, 'keys option returned 3 docs');
+          res.rows.should.have.length(10, 'keys option returned 3 docs');
           done();
         });
       });
