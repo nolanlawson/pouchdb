@@ -480,6 +480,22 @@ adapters.forEach(function (adapter) {
         });
       });
     });
-
+    it('test "keys" with weird characters', function (done) {
+      var db = new PouchDB(dbs.name);
+      var ids = [
+        'baz::bar',
+        '\u0000',
+        '\u30d1\u30a6\u30c1\u30e5DB\u306f\u6700\u9ad8\u3060'
+      ];
+      db.bulkDocs({
+        docs: ids.map(function (id) {return {_id : id}; })
+      }, function (err) {
+        should.not.exist(err);
+        db.allDocs({ keys: ids }, function (err, res) {
+          res.rows.should.have.length(3, 'keys option returned 3 docs');
+          done();
+        });
+      });
+    });
   });
 });
