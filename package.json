@@ -71,7 +71,8 @@
     "build-site": "./bin/build-site.js",
     "shell": "./bin/repl.js",
     "report-coverage": "./bin/run-coverage.js",
-    "build-perf": "browserify tests/performance/*.js > dist/performance-bundle.js"
+    "build-perf": "browserify tests/performance/*.js > dist/performance-bundle.js",
+    "build-cordova": "cp -r vendor tests_cordova/www/vendor && mkdir -p tests_cordova/www/node_modules && cp -r node_modules/mocha node_modules/chai tests_cordova/www/node_modules && cp -r tests tests_cordova/www/tests"
   },
   "browser": {
     "./deps/buffer": false,

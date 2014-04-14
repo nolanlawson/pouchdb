@@ -16,7 +16,12 @@ testUtils.couchHost = function() {
   if (typeof module !== 'undefined' && module.exports) {
     return process.env.COUCH_HOST || 'http://localhost:5984';
   } else if (global.window && global.window.cordova) {
-    return 'http://10.0.2.2:5984';
+    var host;
+    if (global.window.search) {
+      var match = global.window.search.match(/[?&]host=([^&]+)/);
+      host = match && match[1];
+    }
+    return host || 'http://10.0.2.2:5984';
   }
   // In the browser we default to the CORS server, in future will change
   return 'http://localhost:2020';

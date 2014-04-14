@@ -66,6 +66,6 @@ window.app = {
   test: function () {
     var testFile = document.getElementById("testfile");
     var host = document.getElementById("host");
-    window.location = "tests/test.html?testFiles=" + testFile.value + "&host=" + host.value;
+    window.location = "tests/test.html?grep=" + testFile.value + "&host=" + host.value;
   }
 };
