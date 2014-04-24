@@ -104,6 +104,10 @@ or
 
     $ COUCH_HOST=http://user:pass@myname.host.com npm test
 
+### Cordova tests
+
+Tests for Cordova (aka PhoneGap) are in tests/cordova.  It has its own README in that directory.
+
 ### Testing Pouch in a shell
 
 For quick debugging, you can run an interactive Node shell with the `PouchDB` variable already available:

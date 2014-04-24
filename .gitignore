@@ -11,5 +11,5 @@ bower_components
 .idea/
 tests/performance/bundle.js
 lib/.version.js
-tests_cordova/www/tests
-tests_cordova/www/vendor
+tests/cordova/www/tests
+tests/cordova/www/vendor

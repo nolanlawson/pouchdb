@@ -15,16 +15,9 @@ function uniq(list) {
 testUtils.couchHost = function () {
   if (typeof module !== 'undefined' && module.exports) {
     return process.env.COUCH_HOST || 'http://localhost:5984';
-  } else if (global.window && global.window.location &&
-      global.window.location.search) {
-    var match = global.window.location.search.match(/[?&]host=([^&]+)/);
-    var host = match && match[1];
-    if (host) {
-      return host;
-    }
-  }
+  } 
   // In the browser we default to the CORS server, in future will change
-  return 'http://localhost:2020';
+  return ('host' in testUtils.params()) ? testUtils.params().host || 'http://localhost:2020';
 };
 
 testUtils.makeBlob = function (data, type) {
