@@ -80,8 +80,9 @@ window.app = {
 
     var url = "tests/test.html?host=" + host.value;
     if (testFile.value) {
-      url += "&grep=" + testFile.value;
+      url += "&grep=" + testFile.value.match(/([^\.]+)\.js/)[1];
     }
+    console.log('url is ' + url);
 
     window.location = url;
   }
