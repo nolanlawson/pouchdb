@@ -49,8 +49,9 @@ window.app = {
   // Update DOM on a Received Event
   init: function (id) {
     var testFile = document.getElementById("testfile");
-    for (var i = 0; i < window.allTestFiles.length; i++) {
-      var file = window.allTestFiles[i];
+    var testFiles = window.allTestFiles.slice().sort();
+    for (var i = 0; i < testFiles.length; i++) {
+      var file = testFiles[i];
       testFile.options[testFile.options.length] = new Option(file, file);
     }
     var host = document.getElementById("host");
