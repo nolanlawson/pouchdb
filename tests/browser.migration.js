@@ -10,6 +10,12 @@ var scenarios = [
 
 describe('migration', function () {
 
+  function usingDefaultPreferredAdapters() {
+    var defaults = ['idb', 'websql'];
+    return !(PouchDB.preferredAdapters < defaults ||
+      PouchDB.preferredAdapters > defaults);
+  }
+
   scenarios.forEach(function (scenario) {
 
     describe('migrate from ' + scenario, function () {
@@ -20,9 +26,7 @@ describe('migration', function () {
 
       beforeEach(function (done) {
 
-        var altAdapters = ['memory', 'localstorage', 'idb-alt'];
-        if (altAdapters.indexOf(PouchDB.preferredAdapters[0]) !== -1 ||
-              window.msIndexedDB) {
+        if (!usingDefaultPreferredAdapters() || window.msIndexedDB) {
           skip = true;
           done();
           return;
