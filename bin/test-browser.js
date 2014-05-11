@@ -190,8 +190,11 @@ function startTest() {
 
 devserver.start();
 
-if (client.runner === 'saucelabs') {
-  startSauceConnect(startTest);
-} else {
-  startSelenium(startTest);
-}
+// http proxy takes awhile to start up
+setTimeout(function () {
+  if (client.runner === 'saucelabs') {
+    startSauceConnect(startTest);
+  } else {
+    startSelenium(startTest);
+  }
+}, 5000);
