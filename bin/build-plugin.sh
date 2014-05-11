@@ -11,7 +11,7 @@ if [ -z "$OUTPUT_FILENAME" ]; then
 fi
 
 ./node_modules/.bin/browserify lib/plugins/index.js \
-    -r $LEVEL_BACKEND:levelalt \
+    -r $LEVEL_BACKEND:leveldown \
     -r ./lib/plugins/config-$LEVEL_BACKEND.js:adapter-config \
     -r ./lib/plugins/utils-browser.js:../utils \
     -r ./lib/plugins/utils-browser.js:../adapters/../utils \
