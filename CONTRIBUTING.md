@@ -148,7 +148,9 @@ You can specify a particular version of PouchDB or a particular adapter by doing
     http://localhost:8000/tests/performance/test.html?adapter=websql
     http://localhost:8000/tests/performance/test.html?adapter=idb&src=//site.com/pouchdb.js
 
-You can specify particular tests by using `grep=`, e.g.:
+All of the browser plugin adapters (i.e. `idb-alt`, `memory`, and `localstorage`) are also available this way.
+
+You can also specify particular tests by using `grep=`, e.g.:
 
     http://127.0.0.1:8000/tests/performance/test.html?grep=basics
     http://127.0.0.1:8000/tests/performance/test.html?grep=basic-inserts
