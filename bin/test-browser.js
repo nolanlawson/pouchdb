@@ -44,8 +44,8 @@ if (client.runner === 'saucelabs') {
 if (process.env.GREP) {
   qs.grep = process.env.GREP;
 }
-if (process.env.LEVEL_BACKEND) {
-  qs.sourceFile = "pouchdb-" + process.env.LEVEL_BACKEND + ".js";
+if (process.env.ADAPTERS) {
+  qs.adapters = process.env.ADAPTERS;
 }
 testUrl += '?';
 testUrl += querystring.stringify(qs);

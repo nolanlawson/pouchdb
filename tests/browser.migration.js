@@ -20,7 +20,9 @@ describe('migration', function () {
 
       beforeEach(function (done) {
 
-        if (PouchDB.adapters.levelalt || window.msIndexedDB) {
+        var altAdapters = ['memory', 'localstorage', 'idb-alt'];
+        if (altAdapters.indexOf(PouchDB.preferredAdapters[0]) !== -1 ||
+              window.msIndexedDB) {
           skip = true;
           done();
           return;
