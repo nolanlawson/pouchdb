@@ -105,7 +105,8 @@ testUtils.base64Blob = function (blob, callback) {
 // node adapter ones with a db location
 testUtils.adapterUrl = function (adapter, name) {
 
-  // CouchDB master has problems with cycling databases rapidly
+  return 'db2_' + name;
+  /* // CouchDB master has problems with cycling databases rapidly
   // so give tests seperate names
   if (testUtils.isCouchMaster()) {
     name += '_' + Date.now();
@@ -114,7 +115,7 @@ testUtils.adapterUrl = function (adapter, name) {
   if (adapter === 'http') {
     return testUtils.couchHost() + '/' + name;
   }
-  return name;
+  return name; */
 };
 
 // Delete specified databases

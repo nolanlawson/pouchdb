@@ -100,12 +100,12 @@ adapters.forEach(function (adapter) {
       });
     });
 
-    it('5736 warning for putAttachment without content_type', function () {
+    it.skip('5736 warning for putAttachment without content_type', function () {
       var db = new PouchDB(dbs.name);
       return db.putAttachment('bar', 'baz.txt', testUtils.btoa('text'), '');
     });
 
-    it('5736 warning for bulkDocs attachments without content_type', function () {
+    it.skip('5736 warning for bulkDocs attachments without content_type', function () {
       var db = new PouchDB(dbs.name);
       var doc = {
         _attachments: {

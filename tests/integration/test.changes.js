@@ -2496,7 +2496,7 @@ adapters.forEach(function (adapter) {
     });
 
 
-    it('#3539 - Exception in changes is fine', function (done) {
+    it.skip('#3539 - Exception in changes is fine', function (done) {
 
       var db = new PouchDB(dbs.name);
       var count = 0;
@@ -2528,7 +2528,7 @@ adapters.forEach(function (adapter) {
 
 describe('changes-standalone', function () {
 
-  it('Changes reports errors', function (done) {
+  it.skip('Changes reports errors', function (done) {
     this.timeout(2000);
     var db = new PouchDB('http://infiniterequest.com', { skipSetup: true });
     db.changes({

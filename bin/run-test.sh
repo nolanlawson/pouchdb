@@ -60,19 +60,6 @@ if [ "$CLIENT" == "selenium:phantomjs" ]; then
   npm install phantomjs@2.1.2 # do this on-demand to avoid slow installs
 fi
 
-printf 'Waiting for host to start .'
-WAITING=0
-until $(curl --output /dev/null --silent --head --fail --max-time 2 $COUCH_HOST); do
-    if [ $WAITING -eq 4 ]; then
-        printf '\nHost failed to start\n'
-        exit 1
-    fi
-    let WAITING=WAITING+1
-    printf '.'
-    sleep 5
-done
-printf '\nHost started :)'
-
 if [ "$CLIENT" == "unit" ]; then
     npm run test-unit
 elif [ "$CLIENT" == "node" ]; then

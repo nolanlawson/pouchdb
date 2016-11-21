@@ -73,7 +73,7 @@ adapters.forEach(function (adapter) {
       });
     });
 
-    it('[4595] should reject xhr errors', function (done){
+    it.skip('[4595] should reject xhr errors', function (done){
       var invalidUrl = 'http:///';
       new PouchDB(dbs.name).replicate.to(invalidUrl, {}).catch(function () {
         done();
@@ -81,7 +81,7 @@ adapters.forEach(function (adapter) {
 
     });
 
-    it('[4595] should emit error event on xhr error', function (done){
+    it.skip('[4595] should emit error event on xhr error', function (done){
       var invalidUrl = 'http:///';
       new PouchDB(dbs.name).replicate.to(invalidUrl,{})
         .on('error', function () { done(); });
@@ -781,7 +781,7 @@ adapters.forEach(function (adapter) {
       });
     });
 
-    it('db.info should give correct name', function (done) {
+    it.skip('db.info should give correct name', function (done) {
       // CouchDB Master uses random names
       if (testUtils.isCouchMaster()) {
         return done();

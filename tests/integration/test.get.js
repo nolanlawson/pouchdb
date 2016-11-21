@@ -685,7 +685,7 @@ adapters.forEach(function (adapter) {
       });
     });
 
-    it('Testing get with open_revs on nonexistent doc', function (done) {
+    it.skip('Testing get with open_revs on nonexistent doc', function (done) {
       var db = new PouchDB(dbs.name);
       db.get('nonexistent', { open_revs: ['2-whatever'] }, function (err, res) {
         res.length.should.equal(1, 'just one result');

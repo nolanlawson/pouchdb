@@ -255,7 +255,7 @@ adapters.forEach(function (adapters) {
       }).catch(done);
     });
 
-    describe('#5172 triggering error when replicating', function () {
+    describe.skip('#5172 triggering error when replicating', function () {
       var securedDbs = [], source, dest, previousAjax;
       beforeEach(function () {
         var err = {

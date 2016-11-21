@@ -261,7 +261,7 @@ adapters.forEach(function (adapter) {
       });
     });
 
-    it('#2935 new_edits=false with single unauthorized', function (done) {
+    it.skip('#2935 new_edits=false with single unauthorized', function (done) {
 
       testUtils.isCouchDB(function (isCouchDB) {
         if (adapter !== 'http' || !isCouchDB) {

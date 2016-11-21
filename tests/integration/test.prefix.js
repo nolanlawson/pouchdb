@@ -2,7 +2,7 @@
 
 describe('test.prefix.js', function () {
 
-  it('Test url prefix', function () {
+  it.skip('Test url prefix', function () {
 
     var CustomPouch = PouchDB.defaults({
       prefix: testUtils.couchHost()

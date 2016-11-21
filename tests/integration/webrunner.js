@@ -9,7 +9,7 @@ var pouchdbSrc = window.location.search.match(/[?&]src=([^&]+)/);
 if (pouchdbSrc) {
   pouchdbSrc = decodeURIComponent(pouchdbSrc[1]);
 } else {
-  pouchdbSrc = '../../packages/node_modules/pouchdb/dist/pouchdb.js';
+  pouchdbSrc = './pouchdb.js';
 }
 var scriptsToLoad = [pouchdbSrc];
 if (preferredAdapters) {

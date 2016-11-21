@@ -611,7 +611,7 @@ adapters.forEach(function (adapters) {
       }, done);
     });
 
-    it('#3270 triggers "denied" events',
+    it.skip('#3270 triggers "denied" events',
         function (done) {
       testUtils.isCouchDB(function (isCouchDB) {
         if (/*adapters[1] !== 'http' || */!isCouchDB) {
@@ -657,7 +657,7 @@ adapters.forEach(function (adapters) {
       });
     });
 
-    it('#3270 triggers "denied" events, reverse direction',
+    it.skip('#3270 triggers "denied" events, reverse direction',
       function (done) {
         testUtils.isCouchDB(function (isCouchDB) {
           if (/*adapters[1] !== 'http' || */!isCouchDB) {
