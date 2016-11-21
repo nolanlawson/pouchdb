@@ -3129,11 +3129,11 @@ adapters.forEach(function (adapter) {
 
         function getData(cb) {
           if (typeof process !== 'undefined' && !process.browser) {
-            var bigimage = require('./deps/bigimage.js');
+            var bigimage = require('./bigimage.js');
             cb(null, bigimage);
           } else { // browser
             var script = document.createElement('script');
-            script.src = 'deps/bigimage.js';
+            script.src = './bigimage.js';
             document.body.appendChild(script);
             var timeout = setInterval(function () {
               if (window.bigimage) {
